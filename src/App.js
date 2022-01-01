@@ -2,6 +2,79 @@ import React from 'react';
 import './App.css';
 import './index.css'
 
+function Board() {
+  const [squares, setSquares] = React.useState(Array(9).fill(null))
+
+  const nextValue = calculateNextValue(squares)
+  const winner = calculateWinner(squares)
+  const status = calculateStatus(winner, squares, nextValue)
+
+  function selectSquare(square) {
+    if (winner || squares[square]) {
+      return
+    }
+    const squaresCopy = [...squares]
+    squaresCopy[square] =nextValue
+    setSquares(squareCopy)
+  }
+  function restart() {
+    setSquares(Array(9).fill(null))
+  }
+  function renderSquare(i) {
+    return (
+      <button className="square" onClick={() => selectSquare(i)}>
+        {squares[i]}
+      </button>
+    )
+  }
+
+  return (
+    <div>
+      <div className="status">{status}</div>
+      <div className="board-row">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
+      </div>
+      <div className="board-row">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div className="board-row">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
+      <button className="restart" onClick={restart}>
+        restart
+      </button>
+    </div>
+  )
+}
+
+function Game() {
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board/>
+      </div>
+    </div>
+  )
+}
+
+function calculateStatus(winner, squares, nextValue) {
+  return winner
+  ? `Winner: ${winner}`
+  : squares.every(Boolean)
+  ? `Scratch: Cat's game`
+  : `Next player: ${nextValue}`
+}
+
+function calculateNextValue(squares) {
+  return squares.filter(Boolean).length % 2 === 0 ? 'X' : '0'
+}
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -22,24 +95,12 @@ function calculateWinner(squares) {
   return null
 }
 
-function calculateNextValue(squares) {
-  return squares.filter(Boolean).length % 2 === 0 ? 'X' : '0'
-}
-
-function calculateStatus(winner, squares, nextValue) {
-  return winner
-  ? `Winner: ${winner}`
-  : squares.every(Boolean)
-  ? `Scratch: Cat's game`
-  : `Next player: ${nextValue}`
-}
-
 function App() {
   return (
     <div className="App">
-      Hello I am react app.
+      <Game />
     </div>
-  );
+  )
 }
 
 export default App;
