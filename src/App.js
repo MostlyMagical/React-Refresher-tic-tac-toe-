@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import './index.css'
 
 function Board() {
   const [squares, setSquares] = React.useState(Array(9).fill(null))
@@ -15,7 +14,7 @@ function Board() {
     }
     const squaresCopy = [...squares]
     squaresCopy[square] =nextValue
-    setSquares(squareCopy)
+    setSquares(squaresCopy)
   }
   function restart() {
     setSquares(Array(9).fill(null))
